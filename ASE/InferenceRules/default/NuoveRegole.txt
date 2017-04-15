@@ -1,0 +1,230 @@
+prefix owl:<http://www.w3.org/2002/07/owl#> 
+       rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+       rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+       xsd:<http://www.w3.org/2001/XMLSchema#>
+       my:<http://example.art.uniroma2.it#>
+       ont:<http://example.art.uniroma2.it#>
+                           
+type : rule
+name: Transitive
+id: 1
+premises: ?p rdf:type owl:TransitiveProperty 
+          ?a ?p ?b
+          ?b ?p ?c
+conclusions: ?a ?p ?c
+
+type : rule
+name: Symmetric
+id: 2
+premises: ?p rdf:type owl:SymmetricProperty
+          ?a ?p ?b
+conclusions: ?b ?p ?a
+
+
+type : rule
+name: inverseOf
+id: 3
+premises: ?p1 owl:inverseOf ?p2
+          ?a ?p2 ?b
+conclusions: ?b ?p1 ?a
+
+type : rule
+name: subClass
+id: 4
+premises: ?a rdf:type owl:Class
+          ?a rdfs:subClassOf ?b
+          ?b rdf:type owl:Class
+          ?b rdfs:subClassOf ?c
+          ?c rdf:type owl:Class
+conclusions: ?a rdfs:subClassOf ?c
+
+type : rule
+name: InverseFunctionalProperty
+id: 5
+premises: ?p1 rdf:type owl:InverseFunctionalProperty
+          ?y ?p1 ?x
+          ?z ?p1 ?x
+conclusions: ?y owl:sameAs ?z
+
+
+type : inconsistency
+name: inconsistency
+id: 6
+premises: ?a owl:sameAs ?b
+	      ?a owl:differentFrom ?b
+
+type : rule
+name: FunctionalProperty
+id: 7
+premises: ?p rdf:type owl:FunctionalProperty
+          ?x ?p ?y
+          ?x ?p ?z
+filter: ?y != ?z
+conclusions: ?y owl:sameAs ?z
+
+
+type : rule
+name: EquivalentProperty
+id: 8
+premises: ?p1 owl:equivalentProperty ?p2
+conclusions: ?p1 rdfs:subPropertyOf ?p2
+             ?p2 rdfs:subPropertyOf ?p1
+
+type : rule
+name: ComplexSubClassEquality
+id: 9
+premises: ?c1 owl:hasValue ?i
+          ?c1 owl:onProperty ?p1
+          ?c2 owl:hasValue ?i
+          ?c2 owl:onProperty ?p2
+          ?p1 rdfs:subPropertyOf ?p2
+filter: ?c1 != ?c2
+conclusions: ?c1 rdfs:subClassOf ?c2
+
+type : inconsistency
+name: ClassInconsistency
+id: 10
+premises: ?x owl:maxCardinality "0"^^xsd:nonNegativeInteger
+          ?x owl:onProperty ?p
+          ?u rdf:type ?x
+          ?u ?p ?y
+
+type : rule
+name: ComplexEquivalentclass
+id: 11
+premises: ?p1 rdfs:subPropertyOf ?p2
+          ?class1 owl:equivalentClass ?equiClass1
+          ?equiClass1 rdf:type owl:Restriction
+          ?equiClass1 owl:onProperty ?p1
+          ?equiClass1 owl:minCardinality ?card1
+          ?class2 owl:equivalentClass ?equiClass2
+          ?equiClass2 rdf:type owl:Restriction
+          ?equiClass2 owl:onProperty ?p2
+          ?equiClass2 owl:minCardinality ?card2
+filter: ?card1 >= ?card2
+conclusions: ?class1 rdfs:subClassOf ?class2
+
+type: rule
+name: subProp
+id: 12
+premises: ?x ?p1 ?y
+          ?p1 rdfs:subPropertyOf ?p2
+conclusions: ?x ?p2 ?y
+
+type : rule
+name: ComplexEquivalentclassNew
+id: 13
+premises: ?class1 owl:equivalentClass ?equiClass1
+          ?equiClass1 rdf:type owl:Restriction
+		  ?equiClass1 owl:onProperty ?p1
+          ?equiClass1 owl:minCardinality ?card1
+          ?class2 owl:equivalentClass ?equiClass2
+          ?equiClass2 rdf:type owl:Restriction
+          ?equiClass2 owl:onProperty ?p1
+          ?equiClass2 owl:minCardinality ?card2
+filter: ?card1 >= ?card2
+conclusions: ?class1 rdfs:subClassOf ?class2
+
+type: rule
+name: union
+id: 14
+premises: ?superClass owl:unionOf $union 
+conclusions: $$union  rdfs:subClassOf ?superClass  
+
+type: rule
+name: intersection
+id: 15
+premises: ?subClass owl:intersectionOf $intersection 
+conclusions: ?subClass rdfs:subClassOf $$intersection 
+        
+type: rule
+name: someValuesFrom
+id: 16
+premises: ?class rdf:type owl:Restriction 
+          ?class owl:onProperty ?property 
+          ?class owl:someValuesFrom ?otherClass 
+          ?instance ?property ?value 
+          ?value rdf:type ?otherClass 
+conclusions: ?instance rdf:type ?class 	
+	
+type: rule
+name: allValuesFrom
+id: 17
+premises: ?class rdf:type owl:Restriction 
+          ?class owl:onProperty ?property 
+          ?class owl:allValuesFrom ?otherClass 
+          ?instance rdf:type ?class 
+          ?instance ?property ?value 	
+conclusions: ?value rdf:type ?otherClass
+
+type: rule
+name: equivalentClassForFirstClass
+id: 18
+premises: ?class1 owl:equivalentClass ?class2
+          ?instance rdf:type ?class1
+conclusions: ?instance rdf:type ?class2
+
+type: rule
+name: equivalentClassForSecondClass
+id: 19
+premises: ?class1 owl:equivalentClass ?class2
+          ?instance rdf:type ?class2
+conclusions: ?instance rdf:type ?class1
+
+type: rule
+name: equivalentSymmetric
+id: 20
+premises: ?class1 owl:equivalentClass ?class2
+conclusions: ?class2 owl:equivalentClass ?class1
+
+type: rule
+name: equivalentClass
+id: 21
+premises: ?class1 rdfs:subClassOf ?class2
+          ?class2 rdfs:subClassOf ?class1
+conclusions: ?class1 owl:equivalentClass ?class2
+
+type: rule
+name: domain
+id: 22
+premises: ?class rdf:type owl:Class
+          ?property rdfs:domain ?class
+          ?instance ?property ?res
+conclusions: ?instance rdf:type ?class
+
+type: rule
+name: range
+id: 23
+premises: ?class rdf:type owl:Class
+          ?property rdfs:range ?class
+          ?instance2 ?property ?instance
+conclusions: ?instance rdf:type ?class
+
+
+type: ruleGraph
+name: invented
+id: 24
+premises: ?a rdfs:subClassOf ?d
+conclusions: _:b1 rdfs:subClassOf ?a
+             ?d   rdfs:subClassOf  _:b1
+             
+             ?a rdfs:subClassOf ?d
+
+             _:b2 rdfs:subClassOf ?a
+             ?d rdfs:subClassOf _:b2
+             
+type: ruleGraph
+name: invented2
+id: 25
+premises: ?a rdfs:subClassOf ?b
+          ?b rdfs:subClassOf ?c
+          ?c rdfs:subClassOf ?d
+conclusions: ?a rdfs:subClassOf _:b1
+             _:b1 rdfs:subClassOf _:b2
+             _:b2 rdfs:subClassOf ?d
+                  
+
+               
+
+               
+               

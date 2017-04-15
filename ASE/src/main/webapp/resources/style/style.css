@@ -1,0 +1,572 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 17-mar-2017, 9.28.34
+    Author     : F.Camerlengo
+*/
+@import url("https://fonts.googleapis.com/css?family=Diplomata+SC");
+@import url('https://fonts.googleapis.com/css?family=Griffy');
+@import url('https://fonts.googleapis.com/css?family=Merriweather');
+
+#content{
+    overflow: auto;
+    position: absolute;
+    left:12%;
+    top: 5%
+}
+
+.backgroundHeader2{
+    background-color: #808080;
+}
+
+.backgroundHeader1{
+    background-color:#A9A9A9;
+}
+
+#headerTop{
+    border-top-left-radius: 25%;
+    border-top-right-radius: 25%;
+    height: 60px;
+}
+
+#eyeDiv{ 
+    float:left;
+    height:214px;
+}
+
+#headerDiv{
+    overflow: hidden;
+    height:214px;
+}
+
+body{
+    height:100%;
+    width:100%;
+    margin: 0px;
+}
+
+html{
+    height: 100%;
+    width: 100%;
+}
+
+#contentHeaderDiv{
+    float:left;
+}
+
+#contentHeaderDiv p{
+    padding-top: 20px;
+    padding-left:100px;
+    padding-right:100px;
+}
+
+#acr{
+    font-family: 'Diplomata SC', cursive;
+    font-size: 100px;
+    text-transform: uppercase;
+}
+
+#contentHeader{
+    font-family: 'Griffy', cursive;
+    font-size: 50px;
+    padding-left:70px;
+    text-transform: capitalize;
+}
+
+nav{
+    overflow: hidden;
+}
+
+nav ul{
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+nav li{
+    float: left;
+    border-left: 1px solid #555;
+    border-right: 1px solid #555;
+}
+
+nav li a{
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    font-size:23px;
+    font-family: "Arial Black", Gadget, sans-serif;
+    color: black;
+}
+
+nav li a:hover{
+    background-color: #2F4F4F;
+}
+
+nav li a:active{
+    color: #696969;
+}
+
+#contentArea p{
+    margin: 0px;
+    text-align: center;
+    padding-top:30px;
+    text-transform: uppercase;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#contentArea #button{
+    width: 340px;
+    height:60px;
+    box-sizing: border-box;
+    margin-top: 40px;
+    margin-left: 480px;
+    border-radius: 10%;
+    border: 2px solid black;
+    font-size: 24px;
+    margin-bottom: 55px;
+    background-color: #DCDCDC;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+}
+
+#contentArea #button:hover{
+    background-color: #778899;
+    cursor: pointer;
+}
+
+#contentArea #button:active{
+    outline:none;
+}
+
+#contentArea #button:focus{
+    outline:none;
+}
+
+footer{
+    overflow: hidden;
+    margin-bottom:50px;
+}
+
+footer p{
+    padding: 20px 0px;
+    float:left;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    margin-left:20px;
+}
+
+footer a{
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+#ontPage p.error,#infPageLoad p.error,#startPage p.error,#infErrPage p.error,#results p.error{
+    text-transform: lowercase;
+    margin: 0;
+    padding:0;
+    font-style: italic;
+    color: purple;
+    margin-bottom: 10px;
+}
+
+#startPage{
+    padding-bottom: 50px;
+}
+
+#startPage p.error,#infErrPage p.error{
+    padding:30px 0;
+    margin:0;
+}
+
+#results p.error{
+    padding-top: 35px;
+}
+
+#ontPage p.success{
+    text-transform: lowercase;
+    margin: 0;
+    padding:0;
+    font-style: italic;
+    color: #008000;
+    margin-bottom: 10px;
+}
+
+#infPage p.success{
+    text-transform: lowercase;
+    font-style: italic;
+    color: #008000;
+}
+
+#configuration p.success{
+    text-transform: lowercase;
+    font-style: italic;
+    color: #008000;
+}
+
+#ontPage p,#infPageLoad p,#infPage p,#startPage p,#infErrPage p,#results p.error{
+    margin: 0px;
+    text-align: center;
+    font-family: Arial,Helvetica,sans-serif;
+    text-transform: uppercase;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 40px 0;
+}
+
+#ontPage form,#infPageLoad form{
+    margin-left:350px;
+    border: 1px solid black;
+    width: 580px;
+    font-size:24px;
+    border-radius: 10px;
+}
+
+#ontPage #lastOnt,#infPageLoad #lastRule{
+    text-align: right;
+    text-transform: lowercase;
+    margin-right: 20px;
+}
+
+#lastOnt span,#lastRuleLoad span{
+    font-style: italic;
+}
+
+#ontPage input,#infPageLoad input{
+    margin-left: 60px;
+    margin-top: 20px;
+    background-color:#A9A9A9;
+    font-size: 24px;
+}
+
+#ontPage .upBut,#infPageLoad .upBut{
+    width: 100px;
+    font-size:24px;
+    padding:5px;
+    margin-top:10px;
+    margin-bottom:20px;
+    margin-left: 250px;
+    font-weight: bold;
+    outline: none;
+}
+
+#results .upBut{
+    margin-left:610px;
+    font-size:18px;
+    font-weight: bold;
+    padding:10px;
+    outline: none;
+    background-color:#A9A9A9;
+}
+
+#results #buttonDiv{
+    overflow: hidden;
+    padding-top:40px;
+}
+
+#results #buttonDiv .upBut{
+    float:left;
+    margin-left: 75px;
+}
+
+#infPageLoad .upBut{
+    margin-top:20px;
+}
+
+#ontPage .upBut:hover,#infPageLoad .upBut:hover,#configuration #subConf:hover,#startPage #butSt:hover,#confirmation button:hover,#infPage button:hover,#results .upBut:hover{
+    background-color: #778899;
+    cursor: pointer;
+    outline: none;
+}
+
+#ontPage .upBut:focus,#infPageLoad .upBut:focus,#configuration #subConf:focus,#startPage #butSt:focus,#confirmation button:focus,#infPage button:focus,#results .upBut:focus{
+    outline: none;
+}
+
+#devCop{
+    margin-left: 470px;
+}
+
+div#inferenceRules{
+    overflow: hidden;
+}
+div#inferenceRules form{
+    overflow: hidden;
+    float:left;
+}
+
+#inferenceRules{
+    margin-left:70px;
+    padding-bottom:50px;
+}
+
+#infPage button{
+    margin-left:20px;
+    width: 350px;
+    padding:10px 0;
+    font-size:24px;
+}
+
+#configuration {
+    overflow: hidden;
+    margin-left: 80px;
+    padding:40px 0;
+}
+
+#configuration div{
+    overflow: hidden;
+}
+
+#configuration p {
+    float:left; 
+    margin-top:20px;
+    margin-bottom: 0px;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 24px;
+    text-transform: uppercase;
+}
+
+#configuration input{
+    margin-top:15px;
+    margin-left:15px;
+    font-size: 24px;
+}
+
+#configuration .checkbox{
+    margin-top:28px;
+}
+
+#configuration #subConf{
+    font-weight: bold;
+    margin-left: 0px;
+    outline: none;
+}
+
+#configuration a{
+    display: block;
+    float:left;
+    margin-top:15px;
+    margin-left:10px;
+}
+
+#butSt{
+    margin-left:600px;
+    font-size: 20px;
+    font-weight: bold;
+    width: 100px;
+    border-radius: 10px;
+}
+
+#confirmation button{
+    margin-left:520px;
+    width: 100px;
+    padding:5px 0;
+    border-radius: 10px;
+}
+
+#confirmation form{
+    padding-bottom:40px;
+}
+
+#alert{
+    padding: 40px 0;
+    margin:0px;
+    text-align: center;
+    font-size: 20px;
+    font-family: Arial,Helvetica,sans-serif;
+    text-transform: uppercase;
+    color: #8B0000;
+    font-weight: bold;
+}
+
+.results{
+    margin: 0;
+    padding: 25px 0;
+    text-align: center;
+    font-size: 24px;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.resList{
+    list-style-position:inside;
+    margin:0;
+}
+
+.resList li{
+    list-style-type: none;
+}
+
+.numRes{
+    font-style: italic;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+    display: inline-block;
+    margin:0;
+    padding-left: 50px;
+    padding-bottom:10px;
+    padding-top:20px;
+    font-size: 22px;
+}
+
+.statement,.paths{
+    padding: 8px 0;
+}
+
+.statement,.ontStatement{
+    padding:8px 0;
+    background-color: #87CEEB;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.ontStatement{
+    background-color: #008000;
+}
+
+.statement span:hover,.ontStatement span:hover{
+    cursor: pointer;
+}
+
+.statement span:active,.ontStatement span:active{
+    cursor: pointer;
+}
+
+.paths{
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #CD5C5C;
+    
+}
+
+.path{
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    border-top-style: dashed;
+    border-bottom-style:  dashed; 
+    padding-top:4px;
+    padding-bottom:6px;
+}
+.path span{
+    display: block;
+    margin-top: -25px;
+    padding-left: 28px;
+    padding-bottom: 5px;
+}
+
+.path .ruleId{
+    margin-left:980px;
+    font-weight: bold;
+}
+
+#legend li{
+    list-style-type: none;
+    font-size: 18px;
+}
+
+#legend span{
+    display: block;
+    margin-top: -30px;
+    padding-left: 15px;
+    font-size:24px;
+}
+
+#legend{
+    border:1px solid black;
+    width: 380px;
+    border-radius: 10px;
+    margin-left:50px;
+    margin-bottom:30px;
+}
+
+#legend p{
+    padding-left: 40px;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.paths li::before,#legend li:before{
+    content: "•";
+    font-size: 170%;
+    padding-left:15px;
+}
+
+#legend li:before{
+    padding:0px;
+}
+
+.paths li.invented::before,#legend li.invented::before{
+    color: #8B0000;
+}
+
+.paths li.ontology::before,#legend li.ontology::before{
+    color: #008000;
+}
+
+.paths li.inferred::before,#legend li.inferred::before{
+    color:#FFD700;
+}
+
+
+#results div.resWrap{
+    width: 1160px;
+    overflow: auto;
+    height: 400px;
+    padding: 0 10px;
+    font-size:18px;
+}
+
+#results{
+    padding-bottom: 40px;
+}
+
+.graph{
+    padding:5px 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #6A5ACD;
+}
+
+.graph li{
+    padding:5px 0;
+}
+
+.graph span:hover{
+    cursor: pointer;
+}
+
+.graph span:active{
+    cursor: pointer;
+}
+
+.loader {
+  display:none;
+  margin-left:630px;
+  margin-top:40px;
+  border: 16px solid #808080;
+  border-radius: 50%;
+  border-top: 16px solid #f3f3f3;
+  width: 30px;
+  height: 30px;;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
