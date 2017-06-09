@@ -116,10 +116,10 @@
                                         </c:choose>
                                     </c:when>
                                     <c:when test="${empty param.invReas}">
-                                        <p  class="numRes">${numTr}&nbsp; triples discoveries</p>
+                                        <p  class="numRes">${numTr}&nbsp; triples found</p>
                                     </c:when>
                                     <c:otherwise>
-                                        <p  class="numRes">Choose one or more triple (if you have not selected anything all will be considered by default)</p>
+                                        <p  class="numRes">Choose one or more triples (if you have not selected anything all will be considered by default)</p>
                                     </c:otherwise>
                                 </c:choose>
                                 <div class="resWrap">
@@ -169,10 +169,10 @@
                             <c:when test="${!empty newResBean}">
                                 <c:choose>
                                     <c:when test="${!againInferable}">
-                                        <p class="numRes"> triple are again inferable </p><br>
+                                        <p class="numRes">The triples are again inferable </p><br>
                                     </c:when>
                                     <c:otherwise>
-                                        <p class="numRes"> triple are not again inferable </p><br>
+                                        <p class="numRes">The triples are not again inferable </p><br>
                                     </c:otherwise>
                                 </c:choose>
                             </c:when>
@@ -191,7 +191,7 @@
                                         </c:choose>
                                     </c:when>
                                     <c:when test="${empty param.invReas}">
-                                        <p class="numRes">${numGr}&nbsp; graphs discovered</p>
+                                        <p class="numRes">${numGr}&nbsp; graphs found</p>
                                     </c:when>
                                     <c:otherwise>
                                         <p class="numRes">Choose one or more graphs(if you have not selected anything all will be considered by default)</p>
@@ -246,10 +246,10 @@
                             <c:when test="${!empty newResBean}">
                                 <c:choose>
                                     <c:when test="${!againInferable}">
-                                        <p class="numRes"> graphs are again inferable </p><br>
+                                        <p class="numRes">The graphs are again inferable </p><br>
                                     </c:when>
                                     <c:otherwise>
-                                        <p class="numRes"> graphs are not again inferable </p><br>
+                                        <p class="numRes">The graphs are not again inferable </p><br>
                                     </c:otherwise>
                                 </c:choose>
                             </c:when>
@@ -282,11 +282,11 @@
                                 <div id="buttonDiv">
                                 <form:form modelAttribute="invReasBean" class="formReas" method="post" action="${pageContext.request.contextPath}/reasoningResults">
                                     <input type="hidden" name="againInferable" value="true">
-                                    <button class="upBut" type="submit">Which graphs and/or triple are again inferable?</button>
+                                    <button class="upBut" type="submit">Which graphs and/or triples are again inferable?</button>
                                 </form:form>
                                 <form:form modelAttribute="invReasBean" class="formReas" method="post" action="${pageContext.request.contextPath}/reasoningResults">
                                     <input type="hidden" name="againInferable" value="false">
-                                    <button class="upBut" type="submit">Which graphs and/or triple are not again inferable?</button>
+                                    <button class="upBut" type="submit">Which graphs and/or triples are not again inferable?</button>
                                 </form:form> 
                                 </div>
                             </c:otherwise>
