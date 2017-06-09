@@ -55,12 +55,12 @@
                                 <section id="legend" class="backgroundHeader2">
                                     <p>Legend of the paths triple</p>
                                     <ul>
-                                        <li class="invented"><span>Fake Triple</span></li>
+                                        <li class="invented"><span>Manual Triple</span></li>
                                         <li class="inferred"><span>Inferred Triple</span></li>
                                         <li class="ontology"><span>Ontology Triple</span></li>
                                     </ul>
                                 </section>
-                                <p style="text-align: right;margin-right:140px;text-transform: uppercase;font-family:Arial,Helvetica,sans-serif;"><a href="${contextPath}/loadInferenceRules/show" target="_blank" style="color:blue;">show Rules</a></p>
+                                <p style="text-align: right;margin-right:90px;text-transform: uppercase;font-family:Arial,Helvetica,sans-serif;"><a href="${contextPath}/loadInferenceRules/show" target="_blank" style="color:blue;">show Rules</a></p>
                             </c:when>
                         </c:choose>
                         <c:choose>
@@ -256,12 +256,12 @@
                         </c:choose>
                         <c:choose>
                             <c:when test="${!empty ontologyTriple&&! empty param.invReas}">
-                                <p class="numRes">Choose one ore more ontology triple</p>
+                                <p class="numRes">Choose one ore more ontology triples</p>
                                 <div class="resWrap">
                                     <ul class="resList">
                                         <% int k = 0;%>
                                         <c:forEach var="ontTriple" items="${ontologyTriple}">
-                                            <li class="ontStatement" id="ont<%=k%>" onmouseover="checkIfNeedDisableTriple(<%= "ont" + k%>)"><span onclick="<%out.println("selectStatementOrGraph(ont" + k + ",'#008000')");%>">${ontTriple.subject}&nbsp;&nbsp;${ontTriple.predicate}&nbsp;&nbsp;${ontTriple.object}</span></li>
+                                            <li class="ontStatement" id="ont<%=k%>" onmouseover="checkIfNeedDisableTriple(<%= "ont" + k%>)"><span onclick="<%out.println("selectStatementOrGraph(ont" + k + ",'#8cff3f')");%>">${ontTriple.subject}&nbsp;&nbsp;${ontTriple.predicate}&nbsp;&nbsp;${ontTriple.object}</span></li>
                                                 <% k = k + 1;%>
                                             </c:forEach>
                                     </ul>

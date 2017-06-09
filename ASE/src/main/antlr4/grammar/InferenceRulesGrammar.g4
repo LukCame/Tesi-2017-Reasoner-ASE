@@ -29,7 +29,7 @@ triple: (subject) (predicate) (object);
 
 subject: var|list|uri|blanknode|resourcelist;
 
-predicate: uri|var|resourcelist;
+predicate: uri|var;
 
 object: var|list|uri|literal|blanknode|resourcelist;
 

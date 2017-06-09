@@ -201,28 +201,6 @@ premises: ?class rdf:type owl:Class
 conclusions: ?instance rdf:type ?class
 
 
-type: ruleGraph
-name: invented
-id: 24
-premises: ?a rdfs:subClassOf ?d
-conclusions: _:b1 rdfs:subClassOf ?a
-             ?d   rdfs:subClassOf  _:b1
-             
-             ?a rdfs:subClassOf ?d
-
-             _:b2 rdfs:subClassOf ?a
-             ?d rdfs:subClassOf _:b2
-             
-type: ruleGraph
-name: invented2
-id: 25
-premises: ?a rdfs:subClassOf ?b
-          ?b rdfs:subClassOf ?c
-          ?c rdfs:subClassOf ?d
-conclusions: ?a rdfs:subClassOf _:b1
-             _:b1 rdfs:subClassOf _:b2
-             _:b2 rdfs:subClassOf ?d
-                  
 
                
 

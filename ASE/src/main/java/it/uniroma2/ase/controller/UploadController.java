@@ -63,7 +63,6 @@ public class UploadController {
         }
         try {
             String fileName = serviceFactory.getUploadService().processUpload(fileUpload.getFile(), path);
-            RepositoryConnection repository = serviceFactory.getOntologyService().loadOntology(path + "/" + fileName);
             if (fileUpload.getStartButton() == null) {
                 mv = new ModelAndView("redirect:/loadOntology");
                 mv.addObject("outcome", "success");
@@ -74,7 +73,6 @@ public class UploadController {
             OntologyBean ontBean = new OntologyBean();
             ontBean.setFileName(fileName);
             ontBean.setFilePath(path + "/" + fileName);
-            ontBean.setRepository(repository);
             mv.addObject("ontBean", ontBean);
             return mv;
         } catch (UploadFileException ex) {
@@ -83,16 +81,6 @@ public class UploadController {
             System.err.println("Message: " + ex.getMessage() + "\nCause: " + ex.getCause());
             mv = new ModelAndView("redirect:/loadOntology");
             mv.addObject("outcome", "uploadErr");
-            if (fileUpload.getStartButton() != null) {
-                mv.addObject("stBut", "true");
-            }
-            return mv;
-        } catch (LoadOntologyException ex) {
-            System.err.println("an error was occurred");
-            System.err.println(ex);
-            System.err.println("Message: " + ex.getMessage() + "\nCause: " + ex.getCause());
-            mv = new ModelAndView("redirect:/loadOntology");
-            mv.addObject("outcome", "loadErr");
             if (fileUpload.getStartButton() != null) {
                 mv.addObject("stBut", "true");
             }

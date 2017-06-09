@@ -12,6 +12,7 @@ import it.uniroma2.ase.model.exception.LoadOntologyFileIoException;
 import it.uniroma2.ase.model.exception.LoadOntologyRDFParseException;
 import it.uniroma2.ase.model.exception.LoadOntologyRepositoryException;
 import it.uniroma2.ase.model.exception.LoadOntologyUnsupportedRDFFormatException;
+import it.uniroma2.ase.model.reasoningHandler.ExecutionQuery;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +26,10 @@ import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.BooleanQuery;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
@@ -441,10 +446,11 @@ public class OntologyUtility {
 //        return true;
 //    }
 //    
-    private static void addAllStatementOfGraphToSupportOntologyGraph(RepositoryConnection repository, Graph graph) {
-        for (Statement stm : graph.getStatementList()) {
-            if(!repository.hasStatement(stm, false, repository.getValueFactory().createIRI(SUPPORT_ONTOLOGY_GRAPH))){
-                repository.add(stm, repository.getValueFactory().createIRI(SUPPORT_ONTOLOGY_GRAPH));
+    private static void addAllStatementOfGraphToSupportOntologyGraph(RepositoryConnection repository, Map<String, String> prefixes, Graph graph) {
+        ExecutionQuery ex = new ExecutionQuery();
+        for (Statement statement : graph.getStatementList()) {
+            if(!repository.hasStatement(statement, true, repository.getValueFactory().createIRI(SUPPORT_ONTOLOGY_GRAPH))){
+                repository.add(statement, repository.getValueFactory().createIRI(SUPPORT_ONTOLOGY_GRAPH));
             }
         }
     }
@@ -479,13 +485,13 @@ public class OntologyUtility {
         return false;
     }
     
-    public static boolean addGraphToReasoningResults(RepositoryConnection repository, Graph graph, Path newPath, List<Path> pathList, Map<Graph, List<Path>> resultingGraph, Map<Statement, List<Graph>> reverseGraphReasoning) {
-        if (pathList == null) {
+    public static boolean addGraphToReasoningResults(RepositoryConnection repository,Map<String,String> prefixes, Graph graph, Path newPath, List<Path> pathList, Map<Graph, List<Path>> resultingGraph, Map<Statement, List<Graph>> reverseGraphReasoning) {
+        if (pathList == null || pathList.isEmpty()) {
             pathList = new ArrayList<>();
             pathList.add(newPath);
             resultingGraph.put(graph, pathList);
             if(!graph.isIsAnOntologyGraph()){
-                addAllStatementOfGraphToSupportOntologyGraph(repository, graph);
+                addAllStatementOfGraphToSupportOntologyGraph(repository,prefixes, graph);
             }
             addStatementOfPathToReverseGraphReasoning(reverseGraphReasoning, newPath, graph);
             return true;
@@ -500,7 +506,6 @@ public class OntologyUtility {
             if (k == pathList.size()) {
                 pathList.add(newPath);
                 resultingGraph.put(graph, pathList);
-                addAllStatementOfGraphToSupportOntologyGraph(repository, graph);
                 addStatementOfPathToReverseGraphReasoning(reverseGraphReasoning, newPath, graph);
                 return true;
             }

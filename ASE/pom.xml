@@ -71,6 +71,7 @@
     </dependencies>
 
     <build>
+        <finalName>ASE</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -83,6 +84,7 @@
                         <endorseddirs>${endorsed.dir}</endorseddirs>
                     </compilerArguments>
                 </configuration>
+                
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

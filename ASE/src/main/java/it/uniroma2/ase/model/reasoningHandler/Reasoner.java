@@ -7,12 +7,20 @@ import it.uniroma2.ase.domain.QueriesResults;
 import it.uniroma2.ase.domain.RuleGraphFromBnode;
 import it.uniroma2.ase.domain.Rules;
 import it.uniroma2.ase.model.utility.OntologyUtility;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 /**
  *
@@ -93,6 +101,7 @@ public class Reasoner {
         if (count > numberOfExecution) {
             count--;
         }
+        repository.close();
         // all the reasoning results are stored in the apposite special data structures
         queriesResults.setNumberOfExecution(count);
         queriesResults.setNumberOfInferredTriples(resultingStatement.size());
@@ -104,6 +113,7 @@ public class Reasoner {
         queriesResults.setReverseReasoningResult(reverseReasoningResults);
         queriesResults.setResultingGraph(resultingGraph);
         queriesResults.setResultingOntologyGraph(resultingOntologyGraph);
+        Set<Graph> keySet = resultingOntologyGraph.keySet();
         queriesResults.setReverseReasoningGraphResult(reverseGraphReasoning); 
         return queriesResults;
     }

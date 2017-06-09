@@ -24,9 +24,6 @@
                     </c:choose>
                     <input type="submit" class="upBut" value="Upload"/>
                     <c:choose>
-                        <c:when test="${param.outcome=='loadErr'}">
-                            <p class="error"> error on loading of ontology</p>
-                        </c:when>
                         <c:when test="${param.outcome=='uploadErr'}">
                             <p class="error">error on upload of ontology</p>
                         </c:when>

@@ -9,6 +9,7 @@ import it.uniroma2.ase.domain.Graph;
 import it.uniroma2.ase.domain.Path;
 import it.uniroma2.ase.domain.QueriesResults;
 import it.uniroma2.ase.domain.Rules;
+import it.uniroma2.ase.model.exception.LoadOntologyException;
 import it.uniroma2.ase.model.exception.RulesValidationException;
 import it.uniroma2.ase.model.exception.RunTimeReasoningException;
 import it.uniroma2.ase.model.service.IServiceFactory;
@@ -35,7 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping(value="/startReasoning")
-@SessionAttributes({"ontBean", "rulesBean","confBean","resBean"})
+@SessionAttributes({"resBean"})
 public class StartReasoningController {
     
     @Autowired
@@ -63,21 +64,28 @@ public class StartReasoningController {
         ModelAndView mv;
         HttpSession session = request.getSession();
         OntologyBean ontBean =  (OntologyBean) session.getAttribute("ontBean");
-        RepositoryConnection repository = ontBean.getRepository();
+        RepositoryConnection repository=null;
+        try{
+            repository = serviceFactory.getOntologyService().loadOntology(ontBean.getFilePath());
+        }catch(LoadOntologyException ex){
+            System.err.println("an error was occurred");
+            System.err.println(ex);
+            System.err.println("Message: " + ex.getMessage() + "\nCause: " + ex.getCause());
+            mv = new ModelAndView("redirect:/startReasoning");
+            mv.addObject("outcome", "loadErr");
+            return mv;
+        } 
         InferenceRulesBean rulesBean = (InferenceRulesBean) session.getAttribute("rulesBean");
         Rules rules = rulesBean.getRules();
         ConfigurationBean confBean = (ConfigurationBean) session.getAttribute("confBean");
         Integer numberOfExecution = confBean.getNumberOfExecution();
         List<Integer> rulesId = confBean.getRulesId();
         ResultsBean pastResBean = (ResultsBean) session.getAttribute("resBean");
-        if(pastResBean!=null){
-            repository.clear(repository.getValueFactory().createIRI(OntologyUtility.SUPPORT_ONTOLOGY_GRAPH));
-        }
         try{
             QueriesResults results = serviceFactory.getReasoningService().executeReasoning(repository, rules, numberOfExecution, rulesId);
             mv=new ModelAndView("redirect:/reasoningResults");
             ResultsBean resBean=new ResultsBean();
-            resBean.setQueriesResults(results);
+            resBean.setQueriesResults(results);      
             mv.addObject("resBean",resBean);
             return mv;
         }catch(RunTimeReasoningException ex){

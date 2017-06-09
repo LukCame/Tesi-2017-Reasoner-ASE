@@ -1,0 +1,39 @@
+prefix owl:<http://www.w3.org/2002/07/owl#> 
+       rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+       rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+       xsd:<http://www.w3.org/2001/XMLSchema#>
+       :<http://example.art.uniroma2.it#>
+
+type: rule
+name: locationOfEarthquake
+id: 1
+premises: 
+		  ?instance1 :haSubitoUnTerremotoNel ?date
+		  ?instance1 ?prop1 ?instance2
+		  ?prop1 rdfs:subPropertyOf :siTrovaIn
+conclusions: ?instance2 :haSubitoUnTerremotoNel ?date
+
+type: rule
+name: RegioniCentroItaliaColpiteDalTerremoto
+id: 2
+premises:  :RegioniCentroItalia owl:oneOf $region
+			?instance1 :haSubitoUnTerremotoNel ?date
+			?instance1 :provincia $$region
+conclusions: $$region rdf:type :RegioneCentroItaliaColpitaDalTerremoto
+	
+type: ruleGraph
+name: reificazione
+id: 3
+premises: ?instance1 rdf:type :ComuneItaliano
+		  ?instance1 :haSubitoUnTerremotoNel ?date
+		  ?instance1 :haSindaco ?person		  
+conclusions: _:b1 :nominato ?instance1
+			 _:b1 :haSubitoUnTerremotoNel ?date
+			 _:b1 :haSindaco ?person
+			 
+type: rule
+name: RegioneCentroItaliaColpitaDalTerremoto2
+id: 4
+premises: ?instance1 rdf:type :RegioneCentroItalia
+		  ?instance1 :haSubitoUnTerremotoNel ?date
+conclusions: ?instance1 rdf:type :RegioneCentroItaliaColpitaDalTerremoto		  

@@ -11,6 +11,11 @@ import java.util.List;
 import java.util.Map;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 /**
  *
@@ -18,13 +23,29 @@ import org.eclipse.rdf4j.model.Statement;
  */
 public class GraphHelp {
     
+    public static RepositoryConnection dynamicRepository=null;
+    
+    /**
+     * return a singleton instance of dynamicRepository
+     * @return RepositoryConnection
+     */
+    public static RepositoryConnection getDynamicRepository(){
+        // TODO riutilizzo connection più lento
+        // if(dynamicRepository==null){
+            Repository repository=new SailRepository(new MemoryStore() );
+            repository.initialize();
+            dynamicRepository=repository.getConnection();
+        //}
+        return dynamicRepository;
+    }
+    
     /**
      * Scambia l'elemento in posizione i con l'elemento in posizione j all'interno di statementList e viceversa.
      * @param statementList
      * @param i
      * @param j 
      */
-     private void swap(List<Statement> statementList,int i,int j){
+     private static void swap(List<Statement> statementList,int i,int j){
         Statement statement=statementList.get(i);
         statementList.set(i, statementList.get(j));
         statementList.set(j, statement); 
@@ -37,7 +58,7 @@ public class GraphHelp {
       * @param listOfAllPermutations
       * @param n 
       */
-    private void generateAllPermutationsRec(List<Statement> statementList,List<List<Statement>> listOfAllPermutations,int n){
+    private static void generateAllPermutationsRec(List<Statement> statementList,List<List<Statement>> listOfAllPermutations,int n){
         if(n==0){
             List<Statement> newStatementList=new ArrayList<>();
             for(Statement statement:statementList){
@@ -54,7 +75,7 @@ public class GraphHelp {
         
     }
     
-    public List<List<Statement>> generateAllPermutationsOfStatementList(List<Statement> statementList){
+    public static List<List<Statement>> generateAllPermutationsOfStatementList(List<Statement> statementList){
         int n=statementList.size();
         List<List<Statement>> listOfAllPermutations=new ArrayList<>();
         generateAllPermutationsRec(statementList, listOfAllPermutations, n);
@@ -67,7 +88,7 @@ public class GraphHelp {
      * @param statementList2
      * @return resitutisce true se ad ogni statement di statementList2 corrisponde uno statement in statementList1
      */  
-    public boolean checkIfStatementCorrespond(List<Statement> statementList1,List<Statement> statementList2){
+    public static boolean checkIfStatementCorrespond(List<Statement> statementList1,List<Statement> statementList2){
         List<Statement> supportStatementList1=new ArrayList<>();
         for(Statement statement:statementList1){
             supportStatementList1.add(statement);
@@ -94,7 +115,7 @@ public class GraphHelp {
      * @param statementList2
      * @return restituisce true se statementList2 è un sottoinsieme di statementList1 false altrimenti.
      */
-    public boolean checkIfBnodeCorrespond(List<Statement> statementList1,List<Statement> statementList2){
+    public static boolean checkIfBnodeCorrespond(List<Statement> statementList1,List<Statement> statementList2){
         Map<String,String> correspondingBnode=new HashMap<>();
         for (Statement statement2 : statementList2) {
             boolean isSameStatement = false;
@@ -149,5 +170,15 @@ public class GraphHelp {
             }
         }
         return true;
+    }
+    
+    public static int countTriples(RepositoryConnection repository){
+        RepositoryResult<Statement> statements = repository.getStatements(null, null, null);
+        int c=0;
+        while(statements.hasNext()){
+            statements.next();
+            c++;
+        }
+        return c;
     }
 }

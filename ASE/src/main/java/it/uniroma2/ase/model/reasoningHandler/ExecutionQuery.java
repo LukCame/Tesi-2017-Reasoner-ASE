@@ -131,7 +131,7 @@ public class ExecutionQuery {
      * @return String 
      * @author Artificial Intelligence Research at Tor Vergata ART
      */
-    private String toSPARQL(Value value) {
+    public String toSPARQL(Value value) {
         StringBuilder builder = new StringBuilder();
         if (value instanceof IRI) {
             IRI aURI = (IRI) value;
@@ -268,14 +268,11 @@ public class ExecutionQuery {
      */
     public String createRuleGraphSparqlQuery(List<Statement> statementOfGraph, Map<String, String> prefixes) {
         String query = addPrefixesToSparqlQuery(prefixes);
-        query = query + " Select ";
+        query = query + " Select * ";
         String whereCondition = "where { ";
         Map<String, String> correspondingBnode = new HashMap<>();
         whereCondition = whereCondition + this.createRuleGraphWhereConditonForSparqlQuery(statementOfGraph, correspondingBnode);
         Set<String> keySet = correspondingBnode.keySet();
-        for (String key : keySet) {
-            query = query + "?" + correspondingBnode.get(key) + " ";
-        }
         return query + whereCondition + "}";
     }
 
@@ -286,8 +283,13 @@ public class ExecutionQuery {
      * @return String sparql graph query
      * @author L.Camerlengo
      */
-    private String createRuleGraphSparqlGraphQuery(List<Statement> statementOfGraph, Map<String, String> prefixes) {
-        String query = addPrefixesToSparqlQuery(prefixes) + " select ";
+    public String createRuleGraphSparqlGraphQuery(List<Statement> statementOfGraph, Map<String, String> prefixes) {
+        String query="";
+        if(prefixes!=null){
+            query = addPrefixesToSparqlQuery(prefixes) + " select ";
+        }else{
+            query="select ";
+        }
         Map<String, String> correspondingBnode = new HashMap<>();
         String whereCondition = this.createRuleGraphWhereConditonForSparqlQuery(statementOfGraph, correspondingBnode);
         Set<String> keySet = correspondingBnode.keySet();
@@ -511,6 +513,8 @@ public class ExecutionQuery {
                     BindingSet next = resultsGraph.next();
                     //there is an isomorphic statement in the support ontology graph
                     if (OntologyUtility.areAllBnodeOnBindingSet(next)) {
+                        path.setGeneratesAnOntologyTriple(false);
+                        path.setGeneratesAnOntologyGraph(false);
                         return false;
                     }
                 }
@@ -520,9 +524,12 @@ public class ExecutionQuery {
                         return true;
                     }
                 }
+                path.setGeneratesAnOntologyGraph(true);
                 path.setGeneratesAnOntologyTriple(true);
                 return false;
             } else {
+                path.setGeneratesAnOntologyTriple(false);
+                path.setGeneratesAnOntologyGraph(false);
                 return false;
             }
         }
@@ -543,11 +550,12 @@ public class ExecutionQuery {
             TupleQuery tupleQuery = repository.prepareTupleQuery(QueryLanguage.SPARQL, query);
             TupleQueryResult results = tupleQuery.evaluate();
             // the bindingSet is an isomorphic statement
-            if (results.hasNext()) {
-                return true;
-            } else {
-                return false;
+            while(results.hasNext()){
+                if(OntologyUtility.areAllBnodeOnBindingSet(results.next())){
+                    return true;
+                }
             }
+            return false;
         } else {
             //verify if statement is already on support ontology graph
             String query = createGraphSparqlQuery(statement, prefixes);
@@ -582,7 +590,7 @@ public class ExecutionQuery {
             TupleQueryResult results = tupleQuery.evaluate();
             boolean isOnOntology = false;
             while (results.hasNext()) {
-                BindingSet next = results.next();
+                BindingSet next = results.next();     
                 //the BindingSet is an isomorphic graph 
                 if (OntologyUtility.areAllBnodeOnBindingSet(next)) {
                     isOnOntology = true;
@@ -598,12 +606,17 @@ public class ExecutionQuery {
                     BindingSet next = resultsGraphQuery.next();
                     // the bindingSet is an isomorphic graph
                     if (OntologyUtility.areAllBnodeOnBindingSet(next)) {
+                        path.setGeneratesAnOntologyGraph(false);
+                        path.setGeneratesAnOntologyTriple(false);
                         return false;
                     }
                 }
+                path.setGeneratesAnOntologyTriple(true);
                 path.setGeneratesAnOntologyGraph(true);
                 return false;
             } else {
+                path.setGeneratesAnOntologyGraph(false);
+                path.setGeneratesAnOntologyTriple(false);
                 return false;
             }
         }
@@ -676,7 +689,7 @@ public class ExecutionQuery {
             }
             List<Graph> filteredRewrittenGraphs = new ArrayList<>();
             Path newPath = new Path();
-            //set the premises triple that is generated thisis graphs
+            //set the premises triples that are generated thisis graphs
             newPath.setStatements(statementConverter.getStatementsFromPremisesTriple(premisesTriple, next, repository, prefixes));
             //for each graph
             for (Graph graph : rewrittenGraphs) {
@@ -691,6 +704,8 @@ public class ExecutionQuery {
                     filteredGraph.setStatementList(graph.getStatementList());
                     if (newPath.isGeneratesAnOntologyGraph() || newPath.isGeneratesAnOntologyTriple()) {
                         filteredGraph.setIsAnOntologyGraph(true);
+                    }else{
+                        filteredGraph.setIsAnOntologyGraph(false);
                     }
                     filteredRewrittenGraphs.add(filteredGraph);
                 }
@@ -701,8 +716,13 @@ public class ExecutionQuery {
             newPath.setInferenceRuleName(ruleGraph.getInferenceRuleInfo().getInferenceRuleName());
             //for each graph
             for (Graph graph : filteredRewrittenGraphs) {
-                newPath.setGeneratesAnOntologyGraph(graph.isIsAnOntologyGraph());
-                newPath.setGeneratesAnOntologyTriple(graph.isIsAnOntologyGraph());
+                if(graph.isIsAnOntologyGraph()){
+                    newPath.setGeneratesAnOntologyGraph(true);
+                    newPath.setGeneratesAnOntologyTriple(true);
+                }else{
+                    newPath.setGeneratesAnOntologyGraph(false);
+                    newPath.setGeneratesAnOntologyTriple(false);
+                }
                 //graph contains only one triple
                 if (graph.getStatementList().size() == 1) {
                     //get Path and isomorphic bnode statement if the statement is already inferred otherwise the value is null
@@ -729,15 +749,15 @@ public class ExecutionQuery {
                         thereIsAtLeastOneInference = true;
                     }
                 } else if (graph.isIsAnOntologyGraph()) {
-                    List<Path> pathList = resultingOntologyGraph.get(graph);
+                    List<Path> pathList=resultingOntologyGraph.get(graph);
                     //add the graph in the ontology inferred graphs if necessary
-                    if (OntologyUtility.addGraphToReasoningResults(repository, graph, newPath, pathList, resultingOntologyGraph, reverseGraphReasoning)) {
+                    if (OntologyUtility.addGraphToReasoningResults(repository,prefixes,graph, newPath, pathList, resultingOntologyGraph, reverseGraphReasoning)) {
                         thereIsAtLeastOneInference = true;
                     }
                 } else {
-                    List<Path> pathList = resultingGraph.get(graph);
+                    List<Path> pathList=resultingGraph.get(graph); 
                     //add the graph in the inferred graphs if necessary
-                    if (OntologyUtility.addGraphToReasoningResults(repository, graph, newPath, pathList, resultingGraph, reverseGraphReasoning)) {
+                    if (OntologyUtility.addGraphToReasoningResults(repository,prefixes,graph, newPath, pathList, resultingGraph, reverseGraphReasoning)) {
                         thereIsAtLeastOneInference = true;
                     }
                 }

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.Value;
@@ -65,7 +66,8 @@ public class StatementConverter {
     private Statement getStatementFromTriple(Triple triple, BindingSet tuple, RepositoryConnection repository, Map<String, BNode> bnodeMap) {
         Resource subject;
         IRI predicate;
-        Value object;
+        Value object=null;
+        Literal literal=null;
         ValueFactory factory = repository.getValueFactory();
         if (triple.getSubject().startsWith("?")) {
             subject = (Resource) tuple.getBinding(triple.getSubject().replace("?", "")).getValue();
@@ -101,12 +103,12 @@ public class StatementConverter {
                     String[] split = triple.getObject().split("@");
                     String label=split[0].replaceAll("\"", "");
                     String language=split[1];
-                    object  = factory.createLiteral(label, language);
+                    literal = factory.createLiteral(label, language);
                 }else{
                     int index=triple.getObject().indexOf('^');
                     String label=triple.getObject().substring(0, index).replaceAll("\"", "");
                     IRI datatype=factory.createIRI(triple.getObject().substring(index+2));
-                    object= factory.createLiteral(label, datatype);
+                    literal=factory.createLiteral(label, datatype);
                 }
             }else{
 //                if(triple.getObject().startsWith("<")||triple.getObject().contains(":")){
@@ -117,7 +119,11 @@ public class StatementConverter {
 //                }
             }
         }
-        return factory.createStatement(subject, predicate, object);
+        if(literal==null){
+            return factory.createStatement(subject, predicate, object);
+        }else{
+            return factory.createStatement(subject, predicate, literal);
+        }
     }
     
     public Statement getStatementWithoutPrefixes(Statement statement, RepositoryConnection repository, Map<String, String> prefixes) {

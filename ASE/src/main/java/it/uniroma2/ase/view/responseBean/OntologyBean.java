@@ -17,8 +17,6 @@ public class OntologyBean {
     
     private String filePath;
     
-    private RepositoryConnection repository;
-
     public String getFileName() {
         return fileName;
     }
@@ -35,13 +33,6 @@ public class OntologyBean {
         this.filePath = filePath;
     }
 
-    public RepositoryConnection getRepository() {
-        return repository;
-    }
-
-    public void setRepository(RepositoryConnection repository) {
-        this.repository = repository;
-    }
 
     
    

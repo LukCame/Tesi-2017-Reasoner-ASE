@@ -1,0 +1,97 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix : <http://example.art.uniroma2.it#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+
+
+
+
+
+
+#classi
+:Persona rdf:type rdfs:Class.
+:RegioneItaliana rdf:type rdfs:Class.
+:RegioniCentroItalia rdf:type rdfs:Class.
+:ProvincaItaliana rdf:type rdfs:Class.
+:LocazioneGeografica rdf:type rdfs:Class.
+:ComuneItaliano rdf:type rdfs:Class.
+:RegioneCentroItalia rdf:type rdfs:Class.
+:RegioniCentroItalia owl:oneOf _:b1.
+_:b1 rdf:first :Lazio.
+_:b1 rdf:rest _:b2.
+_:b2 rdf:first :Marche.
+_:b2 rdf:rest _:b3.
+_:b3 rdf:first :Toscana.
+_:b3 rdf:rest _:b4.
+_:b4 rdf:first :Umbria.
+_:b4 rdf:rest _:b5.
+_:b5 rdf:first :Abruzzo.
+_:b5 rdf:rest rdf:nil.
+
+
+#proprietà
+
+:provincia rdf:type owl:ObjectProperty.
+:provincia rdfs:domain :ProvinciaItaliana.
+:provincia rdfs:range :RegioneItaliana.
+:provincia rdfs:subPropertyOf :siTrovaIn.
+
+:haSubitoUnTerremotoNel rdf:type owl:DatatypeProperty.
+
+:inProvincia rdf:type owl:ObjectProperty.
+:inProvincia rdfs:domain :ComuneItaliano.
+:inProvincia rdfs:range :ProvinciaItaliana.
+:inProvincia rdfs:subPropertyOf :siTrovaIn.
+
+
+:siTrovaIn rdf:type owl:ObjectProperty.
+
+:haSindaco rdf:type owl:ObjectProperty.
+
+#istanze
+
+#:Lazio rdf:type :RegioneItaliana.
+#:Marche rdf:type :RegioneItaliana.
+#:Umbria rdf:type :RegioneItaliana.
+#:Abruzzo rdf:type :RegioneItaliana.
+#:Toscana rdf:type :RegioneItaliana.
+#:Perugia rdf:type :italianProvince.
+#:Macerata rdf:type :italianProvince.
+#:Perugia rdf:type :italianProvince.
+#:Rieti rdf:type :italianProvince.
+#:Aquila rdf:type :italianProvince.
+
+:Perugia :provincia :Umbria.
+:Macerata :provincia :Marche.
+:Rieti :provincia :Lazio.
+:Aquila :provincia :Abruzzo.
+
+:Amatrice rdf:type :ComuneItaliano.
+:Pieve-Torina rdf:type :ComuneItaliano.
+
+:Campotosto :haSubitoUnTerremotoNel "2016-08-24"^^xsd:date.
+:Amatrice  :haSubitoUnTerremotoNel "2016-08-24"^^xsd:date.
+:Pieve-Torina :haSubitoUnTerremotoNel "2016-10-26"^^xsd:date.
+:Norcia :haSubitoUnTerremotoNel "2016-08-24"^^xsd:date.
+
+:Norcia :inProvincia :Perugia.
+:Pieve-Torina :inProvincia :Macerata.
+:Amatrice :inProvincia :Rieti.
+:Campotosto :inProvincia :Aquila.
+
+:Amatrice :haSindaco :SergioPirozzi.
+:Pieve-Torina :haSindaco :AlessandroGentilucci.
+
+:Umbira rdf:type :RegioneCentroItalia.
+:Marche rdf:type :RegioneCentroItalia.
+:Lazio rdf:type :RegioneCentroItalia.
+:Abruzzo rdf:type :RegioneCentroItalia.
+:Toscana rdf:type :RegioneCentroItalia.
+
+
+
+ 
+
+
+ 

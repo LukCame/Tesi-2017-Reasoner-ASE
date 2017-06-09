@@ -69,13 +69,13 @@ public class Graph {
             if(statement.getSubject() instanceof BNode){
                 hashCode=hashCode+1;
             }else{
-                hashCode=hashCode+statement.getSubject().stringValue().hashCode();
+                hashCode=hashCode+statement.getSubject().stringValue().hashCode()*17;
             }
             hashCode=hashCode+statement.getPredicate().stringValue().hashCode();
             if(statement.getObject() instanceof BNode){
                 hashCode=hashCode+1;
             }else{
-                hashCode=hashCode+statement.getObject().stringValue().hashCode();
+                hashCode=hashCode+statement.getObject().stringValue().hashCode()*31;
             }
         }
         return hashCode;

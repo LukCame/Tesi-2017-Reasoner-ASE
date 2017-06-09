@@ -19,8 +19,11 @@
             <%@ include file="../../resources/staticPages/header.jsp"  %>
             <section id="startPage" class="backgroundHeader1">
                 <c:choose>
+                    <c:when test="${param.outcome=='loadErr'}">
+                        <p class="error"> error on loading of ontology</p>
+                    </c:when>
                     <c:when test="${outcome=='redirect'}">
-                        <p>reasoning configuration in not complete </p>
+                        <p class="error">reasoning configuration in not complete </p>
                     </c:when>
                     <c:when test="${param.outcome=='runErr'}">
                         <p class="error">error in the reasoning operation</p>
